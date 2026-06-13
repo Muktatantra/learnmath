@@ -1,17 +1,7 @@
-import { LEVELS, OPERATIONS, DIFFICULTIES } from './levels.js';
+import { LEVELS } from './levels.js';
+import { defaultProgress } from './progress.js';
 
 const KEY = 'learnmath_progress';
-
-function defaultProgress() {
-  const progress = {};
-  for (const operation of OPERATIONS) {
-    progress[operation] = {};
-    for (const difficulty of DIFFICULTIES) {
-      progress[operation][difficulty] = { unlockedLevel: 1, bestScores: {} };
-    }
-  }
-  return progress;
-}
 
 function isValidShape(progress) {
   return Boolean(progress?.addition?.easy?.bestScores);

@@ -18,6 +18,23 @@ the basics). Pick an operation, pick a level, and race the clock to answer
 - Progress is saved in your browser (`localStorage`), separately for each
   operation.
 
+## Syncing progress across devices
+
+No account needed — tap the 🔗 button to open the sync panel:
+
+- **Get my sync code** generates a short code (e.g. `AB3D9-K7M2P`) tied to
+  your current progress and saves it on the server.
+- On another device, open the sync panel and enter that code under **Have a
+  code from another device?**. Progress from both devices is merged (the
+  higher unlocked level/score wins on each side), so you never lose progress.
+- After linking, progress is automatically pushed to the server whenever you
+  finish a level, and pulled/merged whenever the app loads.
+- **Unlink this device** stops syncing on that device but doesn't delete the
+  code's data on the server — you can re-link with the same code later.
+
+Anyone with the code can view/update that progress, so treat it like a
+shared PIN rather than a password.
+
 ## Run locally
 
 Requires Node.js 18+.
@@ -49,13 +66,18 @@ docker build -t learnmath .
 Run the container:
 
 ```bash
-docker run -p 3000:3000 learnmath
+docker run -p 3000:3000 -v $(pwd)/data:/app/data learnmath
 ```
 
 Then open http://localhost:3000 in your browser.
 
+The `-v $(pwd)/data:/app/data` mount persists sync codes (used for
+cross-device progress sync) on the host so they survive container
+restarts/recreation. Without it, sync codes are lost when the container is
+removed.
+
 To use a different port:
 
 ```bash
-docker run -p 8080:8080 -e PORT=8080 learnmath
+docker run -p 8080:8080 -e PORT=8080 -v $(pwd)/data:/app/data learnmath
 ```

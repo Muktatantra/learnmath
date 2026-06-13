@@ -12,6 +12,12 @@ export function init() {
 
   elements = {
     themeToggle: document.querySelector('.theme-toggle'),
+    syncModal: document.querySelector('.sync-modal'),
+    syncLinked: document.querySelector('.sync-linked'),
+    syncUnlinked: document.querySelector('.sync-unlinked'),
+    syncCodeValue: document.querySelector('.sync-code-value'),
+    syncCodeInput: document.querySelector('.sync-code-input'),
+    syncMessage: document.querySelector('.sync-message'),
     difficultySelectTitle: document.querySelector('.difficulty-select-title'),
     difficultyGrid: document.querySelector('.difficulty-grid'),
     levelSelectTitle: document.querySelector('.level-select-title'),
@@ -65,6 +71,29 @@ export function toggleTheme() {
   } catch {
     // theme just won't persist
   }
+}
+
+export function toggleSyncPanel(show) {
+  elements.syncModal.hidden = !show;
+  if (show) {
+    setSyncMessage('');
+  }
+}
+
+export function renderSyncPanel({ code }) {
+  elements.syncLinked.hidden = !code;
+  elements.syncUnlinked.hidden = Boolean(code);
+  elements.syncCodeValue.textContent = code || '';
+  elements.syncCodeInput.value = '';
+}
+
+export function setSyncMessage(text, isError = false) {
+  elements.syncMessage.textContent = text;
+  elements.syncMessage.className = 'sync-message' + (text ? (isError ? ' sync-message--error' : ' sync-message--success') : '');
+}
+
+export function getSyncCodeInput() {
+  return elements.syncCodeInput.value;
 }
 
 export function renderDifficultySelect(operation, opProgress) {

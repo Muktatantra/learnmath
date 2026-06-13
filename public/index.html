@@ -10,6 +10,36 @@
 <div class="app">
 
   <button class="theme-toggle" data-action="toggle-theme" aria-label="Toggle dark mode">🌙</button>
+  <button class="sync-toggle" data-action="toggle-sync" aria-label="Sync progress across devices">🔗</button>
+
+  <div class="sync-modal" role="dialog" aria-modal="true" aria-label="Sync progress" hidden>
+    <div class="sync-modal-content">
+      <button class="sync-modal-close" data-action="close-sync" aria-label="Close">&times;</button>
+      <h2 class="screen-title">Sync Progress</h2>
+
+      <div class="sync-linked" hidden>
+        <p>Your sync code — enter it on another device to continue here.</p>
+        <div class="sync-code-value"></div>
+        <div class="sync-actions">
+          <button class="btn btn-secondary" data-action="copy-sync-code">Copy code</button>
+          <button class="btn btn-secondary" data-action="unlink-sync">Unlink this device</button>
+        </div>
+      </div>
+
+      <div class="sync-unlinked" hidden>
+        <p>Get a code to continue your progress on another device.</p>
+        <button class="btn btn-primary" data-action="generate-sync-code">Get my sync code</button>
+
+        <p class="sync-divider">Have a code from another device?</p>
+        <div class="sync-link-row">
+          <input type="text" class="sync-code-input" placeholder="XXXXX-XXXXX" maxlength="11" autocapitalize="characters" autocomplete="off">
+          <button class="btn btn-primary" data-action="link-sync-code">Link</button>
+        </div>
+      </div>
+
+      <div class="sync-message"></div>
+    </div>
+  </div>
 
   <section class="screen" data-screen="start">
     <h1 class="title">learnmath</h1>

@@ -25,16 +25,24 @@ function buildArithmeticLevels({ minStart, minEnd, maxStart, maxEnd, timeStart, 
   });
 }
 
-function buildMultiplicationLevels({ tableSets, multiplierMin, multiplierMax, timeStart, timeEnd }) {
+function buildMultiplicationLevels({ tableSets, multiplierMin, multiplierMax, avoidMultiples, timeStart, timeEnd }) {
   return tableSets.map((tables, i) => {
     const t = i / (LEVELS_PER_DIFFICULTY - 1);
     return {
       tables,
       multiplierMin,
       multiplierMax,
+      avoidMultiples,
       timeLimit: Math.round((timeStart + (timeEnd - timeStart) * t) * 10) / 10,
     };
   });
+}
+
+// Hard multiplication should avoid trivial facts (×1, ×5, ×10) on either factor.
+const HARD_AVOID_MULTIPLES = [1, 5, 10];
+
+function hardRange(start, end) {
+  return range(start, end).filter((n) => !HARD_AVOID_MULTIPLES.includes(n));
 }
 
 const ARITHMETIC_RANGES = {
@@ -46,13 +54,13 @@ const ARITHMETIC_RANGES = {
 const MULTIPLICATION_TABLE_SETS = {
   easy: [[1, 2], [1, 2, 3], [2, 3, 4], [1, 2, 3, 4, 5], [2, 5, 10], [1, 2, 5, 10], [3, 4, 6], [3, 4, 6, 8], [6, 7, 8], range(1, 10)],
   medium: [[6, 7], [7, 8], [8, 9], [9, 10], [6, 7, 8, 9], [7, 8, 9, 10], [10, 11], [11, 12], [9, 10, 11, 12], range(6, 12)],
-  hard: [range(2, 10), range(2, 11), range(2, 12), range(2, 12), range(2, 13), range(2, 13), range(2, 14), range(2, 14), range(2, 15), range(2, 15)],
+  hard: [hardRange(2, 10), hardRange(2, 11), hardRange(2, 12), hardRange(2, 12), hardRange(2, 13), hardRange(2, 13), hardRange(2, 14), hardRange(2, 14), hardRange(2, 15), hardRange(2, 15)],
 };
 
 const MULTIPLICATION_RANGES = {
   easy: { multiplierMin: 1, multiplierMax: 10, timeStart: 14, timeEnd: 9 },
   medium: { multiplierMin: 1, multiplierMax: 12, timeStart: 10, timeEnd: 6 },
-  hard: { multiplierMin: 1, multiplierMax: 15, timeStart: 8, timeEnd: 4 },
+  hard: { multiplierMin: 1, multiplierMax: 15, avoidMultiples: HARD_AVOID_MULTIPLES, timeStart: 8, timeEnd: 4 },
 };
 
 export const LEVELS = {

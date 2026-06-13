@@ -27,9 +27,16 @@ function generateSubtraction({ min, max }) {
   return { text: `${a} - ${b}`, answer: a - b, a, b, op: '-' };
 }
 
-function generateMultiplication({ tables, multiplierMin, multiplierMax }) {
+function generateMultiplication({ tables, multiplierMin, multiplierMax, avoidMultiples }) {
   const table = tables[randInt(0, tables.length - 1)];
-  const multiplier = randInt(multiplierMin, multiplierMax);
+  let multiplier = randInt(multiplierMin, multiplierMax);
+  if (avoidMultiples) {
+    let attempts = 0;
+    while (avoidMultiples.includes(multiplier) && attempts < 20) {
+      multiplier = randInt(multiplierMin, multiplierMax);
+      attempts++;
+    }
+  }
   const a = Math.random() < 0.5 ? table : multiplier;
   const b = a === table ? multiplier : table;
   return { text: `${a} × ${b}`, answer: table * multiplier, a, b, op: '×' };

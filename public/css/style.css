@@ -102,6 +102,154 @@ body {
   box-shadow: 0 2px 6px var(--shadow-strong);
 }
 
+/* ----- Sync ----- */
+
+.sync-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px var(--shadow);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background-color 0.25s ease;
+  z-index: 10;
+}
+
+.sync-toggle:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 6px var(--shadow-strong);
+}
+
+.sync-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 16px;
+  z-index: 30;
+}
+
+.sync-modal[hidden] {
+  display: none;
+}
+
+.sync-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 20px 20px;
+  box-shadow: 0 12px 32px var(--shadow-strong);
+  text-align: center;
+  animation: fade-in 0.2s ease-out;
+}
+
+.sync-modal-content p {
+  color: var(--text-muted);
+  margin: 12px 0;
+}
+
+.sync-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sync-code-value {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: var(--surface-alt);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 8px 0 16px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.sync-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sync-unlinked > .btn-primary {
+  width: 100%;
+}
+
+.sync-divider {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-alt);
+}
+
+.sync-link-row {
+  display: flex;
+  gap: 8px;
+}
+
+.sync-code-input {
+  flex: 1;
+  min-height: 64px;
+  min-width: 0;
+  border-radius: 12px;
+  border: 2px solid var(--surface-alt);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  padding: 0 8px;
+}
+
+.sync-code-input:focus {
+  outline: none;
+  border-color: #3a86ff;
+}
+
+.sync-message {
+  min-height: 24px;
+  margin-top: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.sync-message--error {
+  color: #ef476f;
+}
+
+.sync-message--success {
+  color: #06d6a0;
+}
+
 /* ----- Generic elements ----- */
 
 .title {

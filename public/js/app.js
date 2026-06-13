@@ -1,5 +1,16 @@
 import { createSession, submitAnswer, isSessionOver, getResult, startQuestionTimer } from './game.js';
-import { getProgress, recordLevelResult } from './storage.js';
+import { getProgress, recordLevelResult, saveProgress } from './storage.js';
+import { mergeProgress } from './progress.js';
+import {
+  getSyncCode,
+  setSyncCode,
+  clearSyncCode,
+  normalizeCode,
+  CODE_PATTERN,
+  createSyncCode,
+  fetchRemoteProgress,
+  pushProgress,
+} from './sync.js';
 import * as ui from './ui.js';
 
 const state = {
@@ -84,9 +95,78 @@ function handleAnswer(chosenValue) {
 function finishSession() {
   const session = state.session;
   const result = getResult(session);
-  recordLevelResult(session.operation, session.difficulty, session.levelIndex, result);
+  const progress = recordLevelResult(session.operation, session.difficulty, session.levelIndex, result);
   ui.renderResults(result, session.operation, session.difficulty, session.levelIndex);
   ui.showScreen('results');
+  syncProgress(progress);
+}
+
+async function syncProgress(progress) {
+  const merged = await pushProgress(progress);
+  if (merged) saveProgress(merged);
+}
+
+async function syncOnLoad() {
+  const code = getSyncCode();
+  if (!code) return;
+  const remote = await fetchRemoteProgress(code);
+  if (!remote) return;
+  const merged = mergeProgress(getProgress(), remote);
+  saveProgress(merged);
+  pushProgress(merged);
+}
+
+function openSyncPanel() {
+  ui.renderSyncPanel({ code: getSyncCode() });
+  ui.toggleSyncPanel(true);
+}
+
+async function generateSyncCode() {
+  ui.setSyncMessage('Generating code...');
+  const code = await createSyncCode(getProgress());
+  if (!code) {
+    ui.setSyncMessage('Could not reach server. Try again.', true);
+    return;
+  }
+  ui.renderSyncPanel({ code });
+  ui.setSyncMessage('Sync code created! Save it to use on other devices.');
+}
+
+async function copySyncCode() {
+  const code = getSyncCode();
+  if (!code) return;
+  try {
+    await navigator.clipboard.writeText(code);
+    ui.setSyncMessage('Copied to clipboard!');
+  } catch {
+    ui.setSyncMessage(`Could not copy automatically. Your code is ${code}`, true);
+  }
+}
+
+function unlinkSync() {
+  clearSyncCode();
+  ui.renderSyncPanel({ code: null });
+  ui.setSyncMessage('Unlinked. Progress on this device stays local.');
+}
+
+async function linkSyncCode() {
+  const code = normalizeCode(ui.getSyncCodeInput());
+  if (!CODE_PATTERN.test(code)) {
+    ui.setSyncMessage('Enter a valid code, e.g. AB3D9-K7M2P', true);
+    return;
+  }
+  ui.setSyncMessage('Linking...');
+  const remote = await fetchRemoteProgress(code);
+  if (!remote) {
+    ui.setSyncMessage('Code not found. Check and try again.', true);
+    return;
+  }
+  const merged = mergeProgress(getProgress(), remote);
+  saveProgress(merged);
+  setSyncCode(code);
+  pushProgress(merged);
+  ui.renderSyncPanel({ code });
+  ui.setSyncMessage('Synced! Your progress is now linked.');
 }
 
 function handleClick(event) {
@@ -113,6 +193,18 @@ function handleClick(event) {
     startLevel(state.operation, state.difficulty, state.levelIndex + 1);
   } else if (action === 'toggle-theme') {
     ui.toggleTheme();
+  } else if (action === 'toggle-sync') {
+    openSyncPanel();
+  } else if (action === 'close-sync') {
+    ui.toggleSyncPanel(false);
+  } else if (action === 'generate-sync-code') {
+    generateSyncCode();
+  } else if (action === 'copy-sync-code') {
+    copySyncCode();
+  } else if (action === 'unlink-sync') {
+    unlinkSync();
+  } else if (action === 'link-sync-code') {
+    linkSyncCode();
   } else if (operation) {
     state.operation = operation;
     showDifficultySelect(operation);
@@ -131,6 +223,7 @@ function init() {
   ui.initTheme();
   ui.showScreen('start');
   document.addEventListener('click', handleClick);
+  syncOnLoad();
 }
 
 init();
