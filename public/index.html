@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>learnmath</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <section class="screen" data-screen="start">
+    <h1 class="title">learnmath</h1>
+    <p class="subtitle">Practice addition, subtraction &amp; times tables!</p>
+    <button class="btn btn-primary" data-action="play">Play</button>
+  </section>
+
+  <section class="screen" data-screen="operation-select" hidden>
+    <button class="btn-back" data-action="back-to-start">&larr; Back</button>
+    <h2 class="screen-title">Choose an operation</h2>
+    <div class="card-grid">
+      <button class="op-card op-addition" data-operation="addition">
+        <span class="op-symbol">+</span>
+        <span class="op-name">Addition</span>
+      </button>
+      <button class="op-card op-subtraction" data-operation="subtraction">
+        <span class="op-symbol">&minus;</span>
+        <span class="op-name">Subtraction</span>
+      </button>
+      <button class="op-card op-multiplication" data-operation="multiplication">
+        <span class="op-symbol">&times;</span>
+        <span class="op-name">Multiplication</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="level-select" hidden>
+    <button class="btn-back" data-action="back-to-operations">&larr; Back</button>
+    <h2 class="screen-title level-select-title"></h2>
+    <div class="level-grid"></div>
+  </section>
+
+  <section class="screen" data-screen="game" hidden>
+    <div class="game-header">
+      <div class="lives"></div>
+      <div class="progress"></div>
+      <div class="score"></div>
+    </div>
+    <div class="streak"></div>
+    <div class="timer-row">
+      <div class="timer-track"><div class="timer-fill"></div></div>
+      <div class="timer-label"></div>
+    </div>
+    <div class="question"></div>
+    <div class="choices"></div>
+    <div class="feedback"></div>
+  </section>
+
+  <section class="screen" data-screen="results" hidden>
+    <h2 class="screen-title">Results</h2>
+    <div class="results-stars"></div>
+    <div class="results-summary"></div>
+    <div class="results-actions"></div>
+  </section>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
