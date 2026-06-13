@@ -1,13 +1,20 @@
-import { LEVELS } from './levels.js';
+import { LEVELS, OPERATIONS, DIFFICULTIES } from './levels.js';
 
 const KEY = 'learnmath_progress';
 
 function defaultProgress() {
   const progress = {};
-  for (const operation of Object.keys(LEVELS)) {
-    progress[operation] = { unlockedLevel: 1, bestScores: {} };
+  for (const operation of OPERATIONS) {
+    progress[operation] = {};
+    for (const difficulty of DIFFICULTIES) {
+      progress[operation][difficulty] = { unlockedLevel: 1, bestScores: {} };
+    }
   }
   return progress;
+}
+
+function isValidShape(progress) {
+  return Boolean(progress?.addition?.easy?.bestScores);
 }
 
 let memoryFallback = null;
@@ -15,7 +22,8 @@ let memoryFallback = null;
 export function getProgress() {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? JSON.parse(raw) : defaultProgress();
+    const parsed = raw ? JSON.parse(raw) : null;
+    return isValidShape(parsed) ? parsed : defaultProgress();
   } catch {
     return memoryFallback || (memoryFallback = defaultProgress());
   }
@@ -29,16 +37,16 @@ export function saveProgress(progress) {
   }
 }
 
-export function recordLevelResult(operation, levelIndex, result) {
+export function recordLevelResult(operation, difficulty, levelIndex, result) {
   const progress = getProgress();
-  const opData = progress[operation];
+  const tierData = progress[operation][difficulty];
   const levelNum = levelIndex + 1;
-  const maxLevel = LEVELS[operation].length;
+  const maxLevel = LEVELS[operation][difficulty].length;
 
-  opData.bestScores[levelNum] = Math.max(opData.bestScores[levelNum] || 0, result.score);
+  tierData.bestScores[levelNum] = Math.max(tierData.bestScores[levelNum] || 0, result.score);
 
-  if (result.passed && levelNum === opData.unlockedLevel && levelNum < maxLevel) {
-    opData.unlockedLevel = levelNum + 1;
+  if (result.passed && levelNum === tierData.unlockedLevel && levelNum < maxLevel) {
+    tierData.unlockedLevel = levelNum + 1;
   }
 
   saveProgress(progress);

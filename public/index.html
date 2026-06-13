@@ -9,6 +9,8 @@
 <body>
 <div class="app">
 
+  <button class="theme-toggle" data-action="toggle-theme" aria-label="Toggle dark mode">🌙</button>
+
   <section class="screen" data-screen="start">
     <h1 class="title">learnmath</h1>
     <p class="subtitle">Practice addition, subtraction &amp; times tables!</p>
@@ -34,8 +36,14 @@
     </div>
   </section>
 
-  <section class="screen" data-screen="level-select" hidden>
+  <section class="screen" data-screen="difficulty-select" hidden>
     <button class="btn-back" data-action="back-to-operations">&larr; Back</button>
+    <h2 class="screen-title difficulty-select-title"></h2>
+    <div class="difficulty-grid"></div>
+  </section>
+
+  <section class="screen" data-screen="level-select" hidden>
+    <button class="btn-back" data-action="back-to-difficulty">&larr; Back</button>
     <h2 class="screen-title level-select-title"></h2>
     <div class="level-grid"></div>
   </section>

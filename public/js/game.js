@@ -1,14 +1,15 @@
 import { LEVELS, QUESTIONS_PER_LEVEL, STARTING_LIVES, PASS_THRESHOLD, starsForScore } from './levels.js';
 import { generateQuestion, generateChoices } from './question-generator.js';
 
-export function createSession(operation, levelIndex) {
-  const config = LEVELS[operation][levelIndex];
+export function createSession(operation, difficulty, levelIndex) {
+  const config = LEVELS[operation][difficulty][levelIndex];
   const questions = Array.from({ length: QUESTIONS_PER_LEVEL }, () => {
     const q = generateQuestion(operation, config);
     return { ...q, choices: generateChoices(q.answer) };
   });
   return {
     operation,
+    difficulty,
     levelIndex,
     config,
     questions,

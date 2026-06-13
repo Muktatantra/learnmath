@@ -4,6 +4,7 @@ import * as ui from './ui.js';
 
 const state = {
   operation: null,
+  difficulty: null,
   levelIndex: null,
   session: null,
   cancelTimer: null,
@@ -11,16 +12,23 @@ const state = {
   awaitingAdvance: false,
 };
 
-function showLevelSelect(operation) {
+function showDifficultySelect(operation) {
   const progress = getProgress();
-  ui.renderLevelSelect(operation, progress[operation]);
+  ui.renderDifficultySelect(operation, progress[operation]);
+  ui.showScreen('difficulty-select');
+}
+
+function showLevelSelect(operation, difficulty) {
+  const progress = getProgress();
+  ui.renderLevelSelect(operation, difficulty, progress[operation]);
   ui.showScreen('level-select');
 }
 
-function startLevel(operation, levelIndex) {
+function startLevel(operation, difficulty, levelIndex) {
   state.operation = operation;
+  state.difficulty = difficulty;
   state.levelIndex = levelIndex;
-  state.session = createSession(operation, levelIndex);
+  state.session = createSession(operation, difficulty, levelIndex);
   state.awaitingAdvance = false;
   ui.showScreen('game');
   showQuestion();
@@ -76,18 +84,18 @@ function handleAnswer(chosenValue) {
 function finishSession() {
   const session = state.session;
   const result = getResult(session);
-  recordLevelResult(session.operation, session.levelIndex, result);
-  ui.renderResults(result, session.operation, session.levelIndex);
+  recordLevelResult(session.operation, session.difficulty, session.levelIndex, result);
+  ui.renderResults(result, session.operation, session.difficulty, session.levelIndex);
   ui.showScreen('results');
 }
 
 function handleClick(event) {
   const target = event.target.closest(
-    '[data-action], [data-operation], [data-level-index], [data-value]'
+    '[data-action], [data-operation], [data-difficulty], [data-level-index], [data-value]'
   );
   if (!target || target.disabled) return;
 
-  const { action, operation, levelIndex, value } = target.dataset;
+  const { action, operation, difficulty, levelIndex, value } = target.dataset;
 
   if (action === 'play') {
     ui.showScreen('operation-select');
@@ -95,17 +103,24 @@ function handleClick(event) {
     ui.showScreen('start');
   } else if (action === 'back-to-operations') {
     ui.showScreen('operation-select');
+  } else if (action === 'back-to-difficulty') {
+    showDifficultySelect(state.operation);
   } else if (action === 'back-to-levels') {
-    showLevelSelect(state.operation);
+    showLevelSelect(state.operation, state.difficulty);
   } else if (action === 'retry') {
-    startLevel(state.operation, state.levelIndex);
+    startLevel(state.operation, state.difficulty, state.levelIndex);
   } else if (action === 'next-level') {
-    startLevel(state.operation, state.levelIndex + 1);
+    startLevel(state.operation, state.difficulty, state.levelIndex + 1);
+  } else if (action === 'toggle-theme') {
+    ui.toggleTheme();
   } else if (operation) {
     state.operation = operation;
-    showLevelSelect(operation);
+    showDifficultySelect(operation);
+  } else if (difficulty) {
+    state.difficulty = difficulty;
+    showLevelSelect(state.operation, difficulty);
   } else if (levelIndex !== undefined) {
-    startLevel(state.operation, Number(levelIndex));
+    startLevel(state.operation, state.difficulty, Number(levelIndex));
   } else if (value !== undefined) {
     handleAnswer(Number(value));
   }
@@ -113,6 +128,7 @@ function handleClick(event) {
 
 function init() {
   ui.init();
+  ui.initTheme();
   ui.showScreen('start');
   document.addEventListener('click', handleClick);
 }

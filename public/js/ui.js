@@ -1,4 +1,6 @@
-import { LEVELS, OPERATION_LABELS, QUESTIONS_PER_LEVEL, STARTING_LIVES, starsForScore } from './levels.js';
+import { LEVELS, OPERATION_LABELS, DIFFICULTIES, DIFFICULTY_LABELS, QUESTIONS_PER_LEVEL, STARTING_LIVES, starsForScore } from './levels.js';
+
+const THEME_KEY = 'learnmath_theme';
 
 const screens = {};
 let elements = {};
@@ -9,6 +11,9 @@ export function init() {
   });
 
   elements = {
+    themeToggle: document.querySelector('.theme-toggle'),
+    difficultySelectTitle: document.querySelector('.difficulty-select-title'),
+    difficultyGrid: document.querySelector('.difficulty-grid'),
     levelSelectTitle: document.querySelector('.level-select-title'),
     levelGrid: document.querySelector('.level-grid'),
     lives: document.querySelector('.lives'),
@@ -32,15 +37,77 @@ export function showScreen(name) {
   }
 }
 
-export function renderLevelSelect(operation, opProgress) {
-  const label = OPERATION_LABELS[operation];
-  elements.levelSelectTitle.textContent = `${label.name} (${label.symbol})`;
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  if (elements.themeToggle) {
+    elements.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+export function initTheme() {
+  let theme = null;
+  try {
+    theme = localStorage.getItem(THEME_KEY);
+  } catch {
+    theme = null;
+  }
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  applyTheme(theme);
+}
+
+export function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch {
+    // theme just won't persist
+  }
+}
+
+export function renderDifficultySelect(operation, opProgress) {
+  const opLabel = OPERATION_LABELS[operation];
+  elements.difficultySelectTitle.textContent = `${opLabel.name} (${opLabel.symbol})`;
+  elements.difficultyGrid.innerHTML = '';
+
+  DIFFICULTIES.forEach((difficulty) => {
+    const diffLabel = DIFFICULTY_LABELS[difficulty];
+    const maxLevel = LEVELS[operation][difficulty].length;
+    const unlockedLevel = Math.min(opProgress[difficulty].unlockedLevel, maxLevel);
+
+    const card = document.createElement('button');
+    card.className = 'difficulty-card';
+    card.dataset.difficulty = difficulty;
+    card.style.setProperty('--accent', diffLabel.color);
+
+    const name = document.createElement('div');
+    name.className = 'difficulty-card-name';
+    name.textContent = diffLabel.name;
+    card.appendChild(name);
+
+    const sub = document.createElement('div');
+    sub.className = 'difficulty-card-sub';
+    sub.textContent = `Level ${unlockedLevel} of ${maxLevel}`;
+    card.appendChild(sub);
+
+    elements.difficultyGrid.appendChild(card);
+  });
+}
+
+export function renderLevelSelect(operation, difficulty, opProgress) {
+  const opLabel = OPERATION_LABELS[operation];
+  const diffLabel = DIFFICULTY_LABELS[difficulty];
+  elements.levelSelectTitle.textContent = `${opLabel.name} (${opLabel.symbol}) · ${diffLabel.name}`;
   elements.levelGrid.innerHTML = '';
 
-  LEVELS[operation].forEach((config, index) => {
+  const tierProgress = opProgress[difficulty];
+
+  LEVELS[operation][difficulty].forEach((config, index) => {
     const levelNum = index + 1;
-    const unlocked = levelNum <= opProgress.unlockedLevel;
-    const bestScore = opProgress.bestScores[levelNum] || 0;
+    const unlocked = levelNum <= tierProgress.unlockedLevel;
+    const bestScore = tierProgress.bestScores[levelNum] || 0;
     const stars = starsForScore(bestScore);
 
     const card = document.createElement('button');
@@ -121,14 +188,14 @@ export function showFeedback(isCorrect, correctAnswer, chosenValue) {
   elements.feedback.className = 'feedback ' + (isCorrect ? 'feedback--correct' : 'feedback--incorrect');
 }
 
-export function renderResults(result, operation, levelIndex) {
+export function renderResults(result, operation, difficulty, levelIndex) {
   const levelNum = levelIndex + 1;
-  const maxLevel = LEVELS[operation].length;
+  const maxLevel = LEVELS[operation][difficulty].length;
 
   elements.resultsStars.textContent = '⭐'.repeat(result.stars) + '☆'.repeat(3 - result.stars);
 
   const lines = [
-    `${OPERATION_LABELS[operation].name} - Level ${levelNum}`,
+    `${OPERATION_LABELS[operation].name} · ${DIFFICULTY_LABELS[difficulty].name} - Level ${levelNum}`,
     `Score: ${result.score}`,
     `Correct: ${result.correctCount}/${QUESTIONS_PER_LEVEL}`,
     result.passed ? 'Level Passed! 🎉' : 'Try Again!',
