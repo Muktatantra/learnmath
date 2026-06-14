@@ -1,8 +1,11 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import { CODE_PATTERN, generateCode, readProgress, writeProgress } from './lib/sync-store.js';
 import { isValidProgress, mergeProgress } from './public/js/progress.js';
+import { registerSocketHandlers } from './lib/socket-handlers.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -53,6 +56,10 @@ app.put('/api/sync/:code', (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, () => {
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+registerSocketHandlers(io);
+
+httpServer.listen(PORT, () => {
   console.log(`learnmath server running on port ${PORT}`);
 });

@@ -1,10 +1,14 @@
 # learnmath
 
-A browser-based math practice game for kids (and anyone else brushing up on
-the basics). Pick an operation, pick a level, and race the clock to answer
-10 multiple-choice questions per round.
+A browser-based **GameBox** for kids: a home screen of game tiles covering
+solo math practice and in-person group/party games.
 
-## Gameplay
+## Games
+
+### 🔢 Math Practice (solo)
+
+Pick an operation, pick a level, and race the clock to answer 10
+multiple-choice questions per round.
 
 - **Operations**: Addition, Subtraction, and Multiplication (times tables).
 - **5 levels per operation**, unlocked sequentially as you pass each one.
@@ -17,6 +21,43 @@ the basics). Pick an operation, pick a level, and race the clock to answer
   star rating (⭐ to ⭐⭐⭐) based on your score.
 - Progress is saved in your browser (`localStorage`), separately for each
   operation.
+
+### 🕵️ Imposter (group, Spyfall-style)
+
+Everyone picks a name and emoji avatar and joins a shared lobby. Once
+everyone is ready, the host starts the game:
+
+- Everyone except one random "imposter" gets the same secret category +
+  word on their phone.
+- The imposter only sees "YOU ARE THE IMPOSTER!" — no category hint.
+- Phones go away and the group discusses out loud, in person, trying to spot
+  the imposter without giving the word away.
+- When the host starts voting, everyone taps who they think the imposter is.
+- The host ends voting to reveal the imposter, the word, and the vote tally.
+  "Play Again" re-deals a new round to the same group.
+
+### 🎨 Pictionary
+
+One player at a time is the "drawer":
+
+- The drawer taps "Give me a word!" on their phone to get a random word —
+  only they can see it.
+- A synced **60-second countdown** starts on everyone's screen. The drawer
+  draws it on a real whiteboard/paper while everyone else guesses out loud.
+- The host marks the round as "Guessed it!" or lets the timer run out, then
+  reveals the word to everyone and moves to the next drawer.
+- After a few rounds, "End Game" shows a recap of every word, who drew it,
+  and whether it was guessed in time.
+
+## Orchestrator (host) controls
+
+Group games are coordinated by an **orchestrator** — typically the adult
+running the session. Tap the 🎛️ icon on the GameBox home screen and enter
+the PIN (default `1234`, configurable via the `ORCHESTRATOR_PIN` environment
+variable) to pick a game, see who's ready, start the game, and advance each
+round.
+
+Everyone shares a single room/session — one group game runs at a time.
 
 ## Syncing progress across devices
 
@@ -53,7 +94,8 @@ npm run dev
 ```
 
 The server listens on port 3000 by default; set the `PORT` environment
-variable to use a different port.
+variable to use a different port. Set `ORCHESTRATOR_PIN` to change the
+orchestrator login PIN (default `1234`).
 
 ## Run with Docker
 
@@ -80,4 +122,10 @@ To use a different port:
 
 ```bash
 docker run -p 8080:8080 -e PORT=8080 -v $(pwd)/data:/app/data learnmath
+```
+
+To set a custom orchestrator PIN (default `1234`):
+
+```bash
+docker run -p 3000:3000 -e ORCHESTRATOR_PIN=1234 -v $(pwd)/data:/app/data learnmath
 ```

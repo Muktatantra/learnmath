@@ -43,6 +43,13 @@ export function showScreen(name) {
   }
 }
 
+export function getCurrentScreen() {
+  for (const [key, el] of Object.entries(screens)) {
+    if (!el.hidden) return key;
+  }
+  return null;
+}
+
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   if (elements.themeToggle) {

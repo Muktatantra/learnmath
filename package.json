@@ -1,7 +1,7 @@
 {
   "name": "learnmath",
   "version": "1.0.0",
-  "description": "A web-based math practice game - addition, subtraction, and multiplication times tables.",
+  "description": "A GameBox web app: solo math practice plus group party games (Imposter, Pictionary).",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

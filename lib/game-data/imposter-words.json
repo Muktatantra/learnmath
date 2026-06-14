@@ -1,0 +1,62 @@
+[
+  {
+    "category": "Beach",
+    "words": ["Sandcastle", "Surfboard", "Seashell", "Beach Ball", "Sunscreen", "Lifeguard", "Flip-Flops", "Ice Cream Truck"]
+  },
+  {
+    "category": "Zoo",
+    "words": ["Lion", "Giraffe", "Popcorn", "Zookeeper", "Monkey Cage", "Penguin Pool", "Gift Shop", "Elephant Ride"]
+  },
+  {
+    "category": "School",
+    "words": ["Backpack", "Pencil Case", "Whiteboard", "Recess", "Cafeteria", "Homework", "School Bus", "Locker"]
+  },
+  {
+    "category": "Birthday Party",
+    "words": ["Balloon", "Birthday Cake", "Party Hat", "Present", "Pinata", "Candles", "Confetti", "Goodie Bag"]
+  },
+  {
+    "category": "Space Station",
+    "words": ["Astronaut", "Rocket", "Space Suit", "Moon Rock", "Control Panel", "Zero Gravity", "Satellite", "Space Helmet"]
+  },
+  {
+    "category": "Pirate Ship",
+    "words": ["Treasure Chest", "Parrot", "Cannon", "Telescope", "Anchor", "Eye Patch", "Map", "Plank"]
+  },
+  {
+    "category": "Farm",
+    "words": ["Tractor", "Scarecrow", "Haystack", "Chicken Coop", "Barn", "Pig Pen", "Milk Bucket", "Wheelbarrow"]
+  },
+  {
+    "category": "Jungle",
+    "words": ["Vine", "Waterfall", "Monkey", "Tiger", "Quicksand", "Drum", "Hammock", "Toucan"]
+  },
+  {
+    "category": "Circus",
+    "words": ["Trapeze", "Clown", "Ringmaster", "Juggling Pins", "Tightrope", "Popcorn Stand", "Lion Tamer", "Big Top Tent"]
+  },
+  {
+    "category": "Camping",
+    "words": ["Tent", "Campfire", "Marshmallow", "Sleeping Bag", "Flashlight", "Compass", "Backpack", "S'mores"]
+  },
+  {
+    "category": "Superhero Headquarters",
+    "words": ["Cape", "Secret Identity", "Gadget Belt", "Sidekick", "Villain", "Rescue Mission", "Superpower", "Mask"]
+  },
+  {
+    "category": "Pizza Restaurant",
+    "words": ["Pizza Oven", "Pepperoni", "Delivery Bike", "Menu", "Apron", "Cheese", "Order Ticket", "Garlic Bread"]
+  },
+  {
+    "category": "Magic Show",
+    "words": ["Magic Wand", "Top Hat", "Rabbit", "Disappearing Trick", "Curtain", "Magic Words", "Card Trick", "Assistant"]
+  },
+  {
+    "category": "Snowy Mountain",
+    "words": ["Sled", "Snowman", "Ski Lift", "Hot Chocolate", "Igloo", "Snowball", "Mittens", "Avalanche"]
+  },
+  {
+    "category": "Aquarium",
+    "words": ["Shark Tank", "Jellyfish", "Octopus", "Touch Pool", "Diver", "Sea Turtle", "Gift Shop", "Glass Tunnel"]
+  }
+]

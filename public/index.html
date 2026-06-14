@@ -41,10 +41,112 @@
     </div>
   </div>
 
-  <section class="screen" data-screen="start">
-    <h1 class="title">learnmath</h1>
-    <p class="subtitle">Practice addition, subtraction &amp; times tables!</p>
-    <button class="btn btn-primary" data-action="play">Play</button>
+  <section class="screen" data-screen="gamebox-home">
+    <button class="orchestrator-icon" data-action="open-orchestrator" aria-label="Orchestrator login">🎛️</button>
+    <h1 class="title">GameBox</h1>
+    <p class="subtitle">Pick a game to play!</p>
+    <div class="tile-grid"></div>
+  </section>
+
+  <section class="screen" data-screen="profile-picker" hidden>
+    <button class="btn-back" data-action="profile-back">&larr; Back</button>
+    <h2 class="screen-title">Who are you?</h2>
+    <input type="text" class="profile-name-input" placeholder="Type your name" maxlength="20" autocomplete="off">
+    <div class="avatar-grid"></div>
+    <div class="profile-error"></div>
+    <button class="btn btn-primary" data-action="save-profile">Continue</button>
+  </section>
+
+  <section class="screen" data-screen="lobby-waiting" hidden>
+    <button class="btn-back" data-action="back-to-gamebox">&larr; Back</button>
+    <h2 class="screen-title">Lobby</h2>
+    <div class="lobby-banner"></div>
+    <div class="player-list lobby-player-list"></div>
+    <div class="lobby-actions">
+      <button class="btn btn-secondary" data-action="change-character">Change Character</button>
+      <button class="btn btn-primary lobby-ready-button" data-action="toggle-ready">I'm Ready!</button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="orchestrator-pin" hidden>
+    <button class="btn-back" data-action="back-to-gamebox">&larr; Back</button>
+    <h2 class="screen-title">Orchestrator Login</h2>
+    <input type="password" inputmode="numeric" class="orchestrator-pin-input" placeholder="Enter PIN" maxlength="8" autocomplete="off">
+    <button class="btn btn-primary" data-action="orchestrator-submit-pin">Unlock</button>
+    <div class="orchestrator-pin-error"></div>
+  </section>
+
+  <section class="screen" data-screen="orchestrator-panel" hidden>
+    <button class="btn-back" data-action="back-to-gamebox">&larr; Back</button>
+    <h2 class="screen-title">Orchestrator</h2>
+    <div class="orchestrator-game-select"></div>
+    <div class="player-list orchestrator-player-list"></div>
+    <div class="orchestrator-start-hint"></div>
+    <button class="btn btn-primary orchestrator-start-button" data-action="orchestrator-start-game">Start Game</button>
+    <div class="orchestrator-game-controls"></div>
+    <button class="btn btn-secondary" data-action="orchestrator-reset">Reset to Home</button>
+  </section>
+
+  <section class="screen" data-screen="imposter-reveal" hidden>
+    <h2 class="screen-title">🕵️ Your Secret</h2>
+    <button class="reveal-card" data-action="flip-reveal-card">
+      <div class="reveal-card-front">
+        <span class="reveal-card-icon">🃏</span>
+        <span class="reveal-card-hint">Tap to reveal</span>
+      </div>
+      <div class="reveal-card-back">
+        <div class="reveal-card-imposter" hidden>YOU ARE THE IMPOSTER!</div>
+        <div class="reveal-card-category" hidden></div>
+        <div class="reveal-card-word" hidden></div>
+      </div>
+    </button>
+    <p class="reveal-instructions">Keep your screen secret! Put your phone away and talk it out with the group. The host will start voting when everyone's ready.</p>
+  </section>
+
+  <section class="screen" data-screen="imposter-voting" hidden>
+    <h2 class="screen-title">🗳️ Who's the Imposter?</h2>
+    <p class="imposter-vote-status"></p>
+    <div class="player-list imposter-voting-list"></div>
+  </section>
+
+  <section class="screen" data-screen="imposter-results" hidden>
+    <h2 class="screen-title">Results</h2>
+    <div class="summary-card">
+      <p class="imposter-results-imposter"></p>
+      <p class="imposter-results-word"></p>
+    </div>
+    <h2 class="screen-title">Votes</h2>
+    <div class="player-list imposter-results-tally"></div>
+  </section>
+
+  <section class="screen" data-screen="pictionary-drawer-turn" hidden>
+    <h2 class="screen-title">🎨 Pictionary</h2>
+    <p class="pictionary-drawer-status"></p>
+    <button class="btn btn-primary pictionary-request-word-button" data-action="pictionary-request-word">Give me a word! 🎲</button>
+  </section>
+
+  <section class="screen" data-screen="pictionary-timer" hidden>
+    <h2 class="screen-title">🎨 Pictionary</h2>
+    <p class="pictionary-timer-status"></p>
+    <div class="pictionary-word-display" hidden></div>
+    <div class="timer-row">
+      <div class="pic-timer-track"><div class="pic-timer-fill"></div></div>
+      <div class="pic-timer-label"></div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="pictionary-round-result" hidden>
+    <h2 class="screen-title">Round Over!</h2>
+    <div class="summary-card">
+      <p class="pictionary-round-result-text"></p>
+      <p class="pictionary-round-result-drawer"></p>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="pictionary-recap" hidden>
+    <h2 class="screen-title">🏆 Recap</h2>
+    <div class="recap-list"></div>
+    <p class="recap-empty">No rounds played yet.</p>
   </section>
 
   <section class="screen" data-screen="operation-select" hidden>
@@ -103,6 +205,7 @@
 
 </div>
 
-<script type="module" src="js/app.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

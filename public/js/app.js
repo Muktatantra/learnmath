@@ -106,7 +106,7 @@ async function syncProgress(progress) {
   if (merged) saveProgress(merged);
 }
 
-async function syncOnLoad() {
+export async function syncMathProgressOnLoad() {
   const code = getSyncCode();
   if (!code) return;
   const remote = await fetchRemoteProgress(code);
@@ -169,18 +169,15 @@ async function linkSyncCode() {
   ui.setSyncMessage('Synced! Your progress is now linked.');
 }
 
-function handleClick(event) {
-  const target = event.target.closest(
-    '[data-action], [data-operation], [data-difficulty], [data-level-index], [data-value]'
-  );
-  if (!target || target.disabled) return;
-
-  const { action, operation, difficulty, levelIndex, value } = target.dataset;
+// Returns true if this click was a math-game action (handled here), so the
+// central dispatcher in main.js knows not to look further.
+export function handleMathClick(target, dataset) {
+  const { action, operation, difficulty, levelIndex, value } = dataset;
 
   if (action === 'play') {
     ui.showScreen('operation-select');
   } else if (action === 'back-to-start') {
-    ui.showScreen('start');
+    ui.showScreen('gamebox-home');
   } else if (action === 'back-to-operations') {
     ui.showScreen('operation-select');
   } else if (action === 'back-to-difficulty') {
@@ -215,15 +212,8 @@ function handleClick(event) {
     startLevel(state.operation, state.difficulty, Number(levelIndex));
   } else if (value !== undefined) {
     handleAnswer(Number(value));
+  } else {
+    return false;
   }
+  return true;
 }
-
-function init() {
-  ui.init();
-  ui.initTheme();
-  ui.showScreen('start');
-  document.addEventListener('click', handleClick);
-  syncOnLoad();
-}
-
-init();
