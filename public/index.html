@@ -101,10 +101,20 @@
       </div>
     </button>
     <p class="reveal-instructions">Keep your screen secret! Put your phone away and talk it out with the group. The host will start voting when everyone's ready.</p>
+    <p class="imp-timer-caption">⏳ Discussion time left</p>
+    <div class="timer-row">
+      <div class="imp-timer-track"><div class="imp-timer-fill"></div></div>
+      <div class="imp-timer-label"></div>
+    </div>
   </section>
 
   <section class="screen" data-screen="imposter-voting" hidden>
     <h2 class="screen-title">🗳️ Who's the Imposter?</h2>
+    <p class="imp-timer-caption">⏳ Voting time left</p>
+    <div class="timer-row">
+      <div class="imp-timer-track"><div class="imp-timer-fill"></div></div>
+      <div class="imp-timer-label"></div>
+    </div>
     <p class="imposter-vote-status"></p>
     <div class="player-list imposter-voting-list"></div>
   </section>
@@ -114,9 +124,21 @@
     <div class="summary-card">
       <p class="imposter-results-imposter"></p>
       <p class="imposter-results-word"></p>
+      <p class="imposter-results-caught"></p>
     </div>
     <h2 class="screen-title">Votes</h2>
     <div class="player-list imposter-results-tally"></div>
+    <h2 class="screen-title">🏆 Scoreboard</h2>
+    <div class="player-list imposter-results-scoreboard"></div>
+    <button class="btn btn-secondary go-home-button" data-action="go-home">🏠 Home</button>
+  </section>
+
+  <section class="screen" data-screen="imposter-recap" hidden>
+    <h2 class="screen-title">🏆 Final Scoreboard</h2>
+    <div class="player-list imposter-recap-leaderboard"></div>
+    <h2 class="screen-title">Round History</h2>
+    <div class="recap-list imposter-recap-rounds"></div>
+    <p class="recap-empty imposter-recap-empty">No rounds played yet.</p>
   </section>
 
   <section class="screen" data-screen="pictionary-drawer-turn" hidden>
@@ -141,6 +163,7 @@
       <p class="pictionary-round-result-text"></p>
       <p class="pictionary-round-result-drawer"></p>
     </div>
+    <button class="btn btn-secondary go-home-button" data-action="go-home">🏠 Home</button>
   </section>
 
   <section class="screen" data-screen="pictionary-recap" hidden>

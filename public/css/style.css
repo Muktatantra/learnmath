@@ -797,6 +797,16 @@ body {
   background: #ff6b6b;
 }
 
+.game-tile--resumable {
+  outline: 3px solid #ffd166;
+  outline-offset: 2px;
+}
+
+.game-tile--resumable .game-tile-tag {
+  background: #ffd166;
+  color: #4a3300;
+}
+
 /* ----- Profile picker ----- */
 
 .profile-name-input {
@@ -1126,6 +1136,43 @@ body {
   font-weight: 700;
   color: var(--text-muted);
   margin: 0 0 8px;
+}
+
+.imp-timer-caption {
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 12px 0 4px;
+}
+
+.imp-timer-track {
+  flex: 1;
+  height: 14px;
+  background: var(--surface-alt);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.imp-timer-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  transition: width 0.1s linear, background-color 0.3s ease-out;
+}
+
+.imp-timer-label {
+  color: var(--text);
+  font-weight: 700;
+  min-width: 32px;
+  text-align: right;
+}
+
+.imposter-results-caught {
+  font-weight: 700;
+}
+
+.go-home-button {
+  margin-top: 24px;
 }
 
 /* ----- Pictionary ----- */

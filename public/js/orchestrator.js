@@ -201,6 +201,10 @@ export function handleClick(target, dataset) {
     emit('orchestrator:imposter-play-again', {});
     return true;
   }
+  if (action === 'orchestrator-end-imposter-game') {
+    emit('orchestrator:end-imposter-game', {});
+    return true;
+  }
   if (action === 'orchestrator-pictionary-mark-guessed') {
     emit('orchestrator:pictionary-mark-result', { result: 'guessed' });
     return true;
