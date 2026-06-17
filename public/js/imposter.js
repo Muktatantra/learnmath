@@ -63,13 +63,12 @@ function renderReveal() {
   const els = elements();
   if (!els.revealCard) return;
 
-  els.revealCard.classList.remove('reveal-card--flipped', 'reveal-card--imposter');
+  els.revealCard.classList.remove('reveal-card--flipped');
 
   const secret = latestSecret?.imposter;
   if (!secret) return;
 
   if (secret.assignment === 'IMPOSTER') {
-    els.revealCard.classList.add('reveal-card--imposter');
     if (els.revealImposter) els.revealImposter.hidden = false;
     if (els.revealCategory) els.revealCategory.hidden = true;
     if (els.revealWord) els.revealWord.hidden = true;
