@@ -1121,9 +1121,6 @@ body {
   color: #ef476f;
 }
 
-.reveal-card--imposter {
-  background: linear-gradient(135deg, var(--surface), rgba(239, 71, 111, 0.18));
-}
 
 .reveal-instructions {
   text-align: center;
